@@ -1,0 +1,63 @@
+
+h1
+{
+  font-family: 'Segoe UI';
+}
+
+input
+{
+  font-family: 'Segoe UI';
+}
+
+
+
+/*--------HEADER ---------------------*/
+
+
+/*---------SIGN UP  en LOG IN-------------------- */
+
+#sign_up_form
+{
+  display: block;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#sign_up_form input
+{
+  padding: 20px;
+  width: 350px;
+  display: block;
+  margin-bottom: 30px;
+  border-radius: 200px;
+}
+
+.input_account
+{
+  background-color: #F2E3E3;
+  border: none;
+}
+
+.submit_button
+{
+  background-color: #fff;
+  color: #8FE862;
+  border: 3px solid #8FE862;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.submit_button:hover
+{
+  background-color: #8FE862;
+  color: #fff;
+}
+
+
+
+
+/*-----------INDEX ------------------*/
+
+
+/*------------FOOTER ---------------*/
