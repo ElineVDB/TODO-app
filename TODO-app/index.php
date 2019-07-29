@@ -2,27 +2,32 @@
 
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
-require_once("classes/List.class.php");
+require_once("classes/Lists.class.php");
 require_once("classes/Db.class.php");
 
 
+$get_lists = new Lists();
+$show_lists = $get_lists->getLists();
+
 // controleren of het veld is ingevuld
-/*
-if(!empty($_POST)){
+
+if(!empty($_POST['save'])){
 
   $title = $_POST['title_list'];
   // user_id?
 
-  $list = new List();
-  /*
+  $list = new Lists();
+
   $list->setTitle($title);
   $list->saveList(); // de lijst wordt opgeslagen in de database
+
 }
 else{
   // foutboodschap tonen
   $empty_field_error = "Please, fill in all the fields";
 }
-*/
+
+
 
 ?>
 <!DOCTYPE html>
@@ -52,12 +57,15 @@ else{
 <!-- create a new list -->
 <div class="list_items">
 <div class="create_list" id="create_list_button"> + Create a new list</div>
-
+<h1>Your to-do lists</h1>
 <!-- all your  todo lists -->
-<div class="list"><a href="#">PHP</div>
-<div class="list"><a href="#">Gebruikers & Gedrag</div>
-<div class="list"><a href="#">Smart Technology</div>
-<div class="list"><a href="#">Content Managment Systemen</div>
+<?php foreach($show_lists as $list): ?>
+
+<div class="list" data-id="<?php echo $list['id']?>">
+  <a href="list.php?id=<?php echo $list['id']; ?>"><?php echo $list['title']; ?>
+  </div>
+
+<?php endforeach; ?>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

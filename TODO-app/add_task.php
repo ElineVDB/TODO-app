@@ -1,3 +1,35 @@
+<?php
+
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+require_once("classes/Lists.class.php");
+require_once("classes/Task.class.php");
+require_once("classes/Db.class.php");
+
+// eerst controloren we of alle velden zijn ingevuld
+
+if(!empty($_POST)){
+
+  $title = $_POST['title_task'];
+  $about = $_POST['about_task'];
+  $deadline_date = $_POST['deadline_date_task'];
+  $deadline_hour = $_POST['deadline_hour_task'];
+  $time = $_POST['time'];
+
+  $task = new Task();
+  $task->setTitle($title);
+  $task->setAbout($about);
+  $task->setDeadlineDate($deadline_date);
+  $task->setDeadlineHour($deadline_hour);
+  $task->setTime($time);
+  $task->saveTask(); // slaagt op in de databank
+}
+
+else{
+  $error = "fields can not be empty";
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,8 +43,7 @@
 
 <body>
 
-
-  <form id="add_task_form">
+  <form id="add_task_form" method="post" action="">
     <h1>Add a task</h1>
     <!-- titel -->
     <label>Title</label>
@@ -24,12 +55,12 @@
 
     <!-- deadline -->
     <label>Deadline</label>
-    <input class="input_deadline"type="date" name="deadlinedate_task" placeholder="enter the date of the deadline">
-    <input class="input_deadline" type="time" name="deadlinehour_task" placeholder="enter the hour of the deadline">
+    <input class="input_deadline"type="date" name="deadline_date_task" placeholder="enter the date of the deadline">
+    <input class="input_deadline" type="time" name="deadline_hour_task" placeholder="enter the hour of the deadline">
 
     <!-- time --->
     <label>Time (in hours)</label>
-    <input class="input_time" type="number" name="time" placeholder="how many times is your task?">
+    <input class="input_time" type="number" name="time" placeholder="how many hours will be your task?">
 
     <input type="submit" value="Save" class="submit_button">
 

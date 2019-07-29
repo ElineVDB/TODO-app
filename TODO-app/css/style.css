@@ -1,5 +1,5 @@
 
-*
+h1, h2,p, table, a
 {
   font-family: 'Segoe UI';
 }
@@ -8,6 +8,12 @@ h1
 {
   font-size: 25px;
   font-family: 'Segoe UI';
+}
+
+h2
+{
+  font-size: 18px;
+  font-weight: bold;
 }
 
 label
@@ -129,6 +135,12 @@ input
   left: 10%;
 }
 
+.create_list :hover
+{
+  background-color: #8FE862;
+  color: #fff;
+}
+
 .input_list_title
 {
   background-color: #fff;
@@ -161,7 +173,7 @@ input
 #list_items
 {
   display: block;
-  width: 65%;
+  width: 80%;
   margin-top: 50px;
   margin-left: auto;
   margin-right: auto;
@@ -174,12 +186,56 @@ input
   border-bottom: 2px solid #000;
 }
 
+#to_do div
+{
+  margin-top: 30px;
+}
+
+.add_task_button
+{
+  text-decoration: none;
+  padding: 5px;
+  color: #fff;
+  border: 1px solid #8FE862;
+  background-color: #8FE862;
+}
+
+.to_dos tr
+{
+  border: 1px solid #F2E3E3;
+  background-color: #F2E3E3;
+}
+
+.to_dos td
+{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.deadline
+{
+  width: 100px;
+}
+.task_title
+{
+  width: 220px;
+}
+
+.done_button
+{
+  border: 1px solid #8FE862;
+  background-color: #8FE862;
+  color: #fff;
+  padding: 5px;
+  cursor: pointer;
+}
+
 /*------------------Add a new task ----------------------*/
 
 #add_task_form
 {
   display: block;
-  width: 65%;
+  width: 80%;
   margin-top: 50px;
   margin-left: auto;
   margin-right: auto;
@@ -207,5 +263,41 @@ input
   display: block;
 }
 
+/*------------- task info ------------------*/
+
+.task_info
+{
+  width: 80%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.deadline_and_time
+{
+  margin-top: 50px;
+}
+
+.deadline_and_time tr
+{
+  height: 25px;
+}
+
+.deadline_and_time th
+{
+  font-weight: bold;
+  width: 150px;
+  text-align: left;
+}
+
+.comments
+{
+  padding-top: 50px;
+}
+
+.comment
+{
+  margin-top: 50px;
+}
 
 /*------------FOOTER ---------------*/

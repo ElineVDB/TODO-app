@@ -5,7 +5,8 @@ $(document).ready(function(){
   $("#create_new_list").hide();
   $("#create_list_button").click(function(){
     $("#create_new_list").show(1000);
-    $("#cancel_button").click(function(){
-      $("#create_new_list").hide();
+   $("#cancel_button").click(function(){
+     $("#create_new_list").hide();
   })
+})
 })
