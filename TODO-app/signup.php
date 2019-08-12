@@ -1,8 +1,11 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
-require_once("classes/User.class.php");
-require_once("classes/Db.class.php");
+include_once("bootstrap.php");
+
+$st = new User();
+$study = $st->showAllStudies();
+
 
 // eerst controleren we of alle velden ingevuld zijn
 
@@ -11,6 +14,7 @@ if(!empty($_POST)){
   session_start();
   $firstname = $_POST['firstname'];
   $lastname = $_POST['lastname'];
+  $study = $_POST['study'];
   $email = $_POST['email'];
   $password = $_POST['password'];
   $password_confirm = $_POST['password_confirm'];
@@ -20,6 +24,8 @@ if(!empty($_POST)){
   $user->getFirstname();
   $user->setLastname($lastname);
   $user->getLastname();
+  $user->setStudy($study);
+  $user->getStudy();
   $user->setEmail($email);
   $user->getEmail();
   $user->setPassword($password);
@@ -48,13 +54,14 @@ else{
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
-    <title>Sign up | TODO app</title>
+    <title>Sign up | DoobyDo</title>
 </head>
 
 <body>
 
   <div class="container">
 
+  <img src="img/logo.png" alt="logo">
 
   <form id="sign_up_form" method="post" action="">
     <h1>Sign up </h1>
@@ -68,6 +75,14 @@ else{
 
     <!-- last name -->
     <input type="text" name="lastname" class="input_account" placeholder="Last name">
+
+    <!-- study -->
+    <select class="select_study">
+      <option name="study">-----Select your study----</option>
+      <?php foreach($study as $st): ?>
+      <option name = "study" value="<?php echo $st['id_study'];?>"><?php echo $st['study'] . " (" . $st['study_abb'] . ")" ; ?></option>
+    <?php endforeach; ?>
+    </select>
 
     <!-- email -->
     <input type="text" name="email" class="input_account" placeholder="E-mail">
@@ -84,10 +99,8 @@ else{
 
   </form>
 
-
-
 </div>
-
+<?php include_once("includes/footer.inc.php");?>
 </body>
 
 </html>

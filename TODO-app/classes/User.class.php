@@ -5,7 +5,16 @@ class User {
   private $email;
   private $password;
   private $password_confirm;
+  private $study;
   //private $user_id; //is nodig om profiel aan te passen
+
+// toon alle studies in de dropdown van sign up
+  public function showAllStudies(){
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("select * from study");
+    $statement->execute();
+    return $statement;
+  }
 
 
   // krijg de waarde van firstname
@@ -39,6 +48,16 @@ class User {
     }
     /*$this->lastname = $lastname;
     return $this;*/
+  }
+
+/// study
+  public function getStudy(){
+    return $this->study;
+  }
+
+  public function setStudy($study){
+      $this->study = htmlspecialchars($study);
+      return $this;
   }
 
 
@@ -88,21 +107,20 @@ public function register(){
     throw new Exception("Passwords don't match");
   }
   else{
-  // voor register 2
+
   $options = [
     "cost" => 12 // 2^12
     ];
   $password = password_hash($this->password,PASSWORD_DEFAULT,$options);
   try{
     $conn = Db::getInstance();
-    $statement = $conn->prepare("insert into users(first_name, last_name, email, password) values(:firstname, :lastname, :email, :password)");
+    $statement = $conn->prepare("insert into users(first_name, last_name, study_id, email, password) values(:firstname, :lastname, :study_id, :email, :password)");
 
     $statement->bindValue(':firstname', $this->getFirstname());
     $statement->bindValue(':lastname', $this->getLastname());
+    $statement->bindValue(':study_id', $this->getStudy());
     $statement->bindValue(':email', $this->getEmail());
     $statement->bindValue(':password', $password);
-
-
     $result = $statement->execute();
     //return $result;
     $_SESSION['first_name'] = $firstname;
@@ -114,7 +132,6 @@ public function register(){
   }
 
 }
-
 
 }
 

@@ -2,9 +2,19 @@
 
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
-require_once("classes/Lists.class.php");
-require_once("classes/Task.class.php");
-require_once("classes/Db.class.php");
+include_once("bootstrap.php");
+
+// heeft id van de lijst nodig zodat de nieuwe taak terrechtkomt bij juiste lijst
+
+$id = null;
+if ( !empty($_GET['id'])) {
+    $id = $_REQUEST['id'];
+}
+
+if ( null==$id ) {
+    header("Location: list.php");
+}
+
 
 // eerst controloren we of alle velden zijn ingevuld
 
@@ -15,6 +25,7 @@ if(!empty($_POST)){
   $deadline_date = $_POST['deadline_date_task'];
   $deadline_hour = $_POST['deadline_hour_task'];
   $time = $_POST['time'];
+  $list_id = $id;
 
   $task = new Task();
   $task->setTitle($title);
@@ -22,7 +33,11 @@ if(!empty($_POST)){
   $task->setDeadlineDate($deadline_date);
   $task->setDeadlineHour($deadline_hour);
   $task->setTime($time);
-  $task->saveTask(); // slaagt op in de databank
+  $task->setListId($list_id);
+
+  if($task->saveTask()){
+    header("Location: list.php?id= $list_id");
+  }
 }
 
 else{
@@ -38,13 +53,15 @@ else{
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
-    <title> Add a task | TODO app</title>
+    <title> Add a task | DoobyDo</title>
 </head>
 
 <body>
-
-  <form id="add_task_form" method="post" action="">
+<header>
+    <a href="#">Back</a>
     <h1>Add a task</h1>
+  </header>
+  <form id="add_task_form" method="post" action="">
     <!-- titel -->
     <label>Title</label>
     <input class="input_title" type="text" name="title_task" placeholder="enter a title of your task">
@@ -65,7 +82,7 @@ else{
     <input type="submit" value="Save" class="submit_button">
 
   </form>
-
+<?php include_once("includes/footer.inc.php");?>
 </body>
 
 </html>

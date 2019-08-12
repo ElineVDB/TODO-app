@@ -1,19 +1,52 @@
+/*
+  groen: #8FE862;
+  lichtgrijs:  #F2E3E3;
+  donkergrijs: #525049;
 
-h1, h2,p, table, a
+*/
+
+body
+{
+  background-color: #DFFEF1;
+}
+
+.container
+{
+  display: block;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+}
+
+
+h2,p, table, a
 {
   font-family: 'Segoe UI';
+  color: #525049;
 }
 
 h1
 {
   font-size: 25px;
+  font-weight: bold;
   font-family: 'Segoe UI';
+  border-bottom: 2px solid #8FE862;;
+  padding-bottom: 10px;
+  color: #8FE862;
+}
+
+header h1
+{
+  color: #fff;
+  text-align: center;
 }
 
 h2
 {
   font-size: 18px;
   font-weight: bold;
+  color: #525049;
 }
 
 label
@@ -21,26 +54,46 @@ label
   font-family: 'Segoe UI';
 }
 
-
 /*--------HEADER ---------------------*/
 
 header
 {
   width: 100%;
-  height: 50px;
+  height: 80px;
   background-color: #8FE862;
+}
+
+.logout
+{
+  position: absolute;
+  right: 10%;
+  text-decoration: none;
+  border: 2px solid #fff;
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.logout:hover
+{
+  border: none;
+  background-color: #F2E3E3;
+  color: #525049;
+  padding: 10px;
 }
 
 /*---------SIGN UP  en LOG IN-------------------- */
 
-
 #sign_up_form
 {
   display: block;
-  width: 65%;
-  margin-top: 50px;
+  width: 80%;
   margin-left: auto;
   margin-right: auto;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 20px;
 }
 
 #sign_up_form h1
@@ -48,7 +101,7 @@ header
   margin-bottom: 50px;
 }
 
-input
+#sign_up_form input, .select_study
 {
   padding: 15px;
   width: 300px;
@@ -57,7 +110,7 @@ input
   border-radius: 200px;
 }
 
-.input_account
+.input_account, .select_study
 {
   background-color: #F2E3E3;
   border: none;
@@ -65,16 +118,17 @@ input
 
 .submit_button
 {
-  background-color: #fff;
-  color: #8FE862;
-  border: 3px solid #8FE862;
+  color: #fff;
+  border: 1px solid #8FE862;
+  background-color: #8FE862;
   font-weight: bold;
   font-size: 20px;
 }
 
 .submit_button:hover
 {
-  background-color: #8FE862;
+  border: 1px solid #10B01D;
+  background-color: #10B01D;
   color: #fff;
   cursor: pointer;
 }
@@ -99,12 +153,10 @@ input
   margin-left: auto;
   margin-right: auto;
   text-decoration: none;
-
 }
 
 .create_list
 {
-  background-color: #fff;
   border: 3px solid #8FE862;
   color: #8FE862;
   font-weight: bold;
@@ -112,6 +164,7 @@ input
   padding-left: 20px;
   padding-top: 20px;
   padding-bottom: 20px;
+  margin-bottom: 30px;
   cursor: pointer;
 }
 
@@ -121,21 +174,22 @@ input
   width: 350px;
   height: 50px;
   background-color: #F2E3E3;
+  color: #525049;
   cursor: pointer;
 }
 
-#create_new_list
+.list a
 {
-  width: 350px;
-  height: 220px;
-  padding: 20px;
-  background-color: #F2E3E3;
-  position: absolute;
-  top: 10%;
-  left: 10%;
+  text-decoration: none;
 }
 
-.create_list :hover
+.list:hover
+{
+  background-color: #8FE862;
+  color: #fff;
+}
+
+.create_list:hover
 {
   background-color: #8FE862;
   color: #fff;
@@ -147,7 +201,7 @@ input
   border: none;
 }
 
-.cancel_list_button, .save_list_button
+.cancel_button, .save_list_button, .delete_task_button, .delete_list_button
 {
   display: inline;
   width: 100px;
@@ -168,6 +222,18 @@ input
   margin-top: 60px;
 }
 
+
+#create_new_list
+{
+  width: 350px;
+  height: 220px;
+  padding: 20px;
+  background-color: #F2E3E3;
+  position: absolute;
+  top: 10%;
+  left: 10%;
+}
+
 /*---------------------List overview -------------------*/
 
 #list_items
@@ -183,7 +249,10 @@ input
 {
   margin-top: 25px;
   font-size: 20px;
-  border-bottom: 2px solid #000;
+  /*border-bottom: 2px solid #000;*/
+  padding: 10px;
+  background-color: rgb(143, 232, 98, 0.8);
+  color: #fff;
 }
 
 #to_do div
@@ -200,10 +269,23 @@ input
   background-color: #8FE862;
 }
 
+.add_task_button:hover
+{
+  border: 1px solid #10B01D;
+  background-color: #10B01D;
+}
+
 .to_dos tr
 {
   border: 1px solid #F2E3E3;
   background-color: #F2E3E3;
+  text-decoration: none;
+}
+
+.to_dos tr:hover
+{
+  border: 1px solid #D1C5C5;
+  background-color: #D1C5C5;
 }
 
 .to_dos td
@@ -223,11 +305,44 @@ input
 
 .done_button
 {
-  border: 1px solid #8FE862;
+  border: 2px solid #8FE862;
+  width: 100px;
   background-color: #8FE862;
   color: #fff;
+  font-weight: bold;
   padding: 5px;
   cursor: pointer;
+}
+
+.done_button:hover
+{
+  border: 2px solid #10B01D;
+  background-color: #10B01D;
+}
+
+/*-------------- delete list --------------------*/
+
+#delete_list
+{
+  width: 350px;
+  height: 220px;
+  padding: 20px;
+  background-color: #F2E3E3;
+  position: absolute;
+  top: 10%;
+  left: 10%;
+}
+
+.delete_list_button
+{
+  background-color: red;
+  border: none;
+  color: #fff;
+}
+
+#delete_list span
+{
+  font-weight: bold;
 }
 
 /*------------------Add a new task ----------------------*/
@@ -271,6 +386,7 @@ input
   display: block;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 50px;
 }
 
 .deadline_and_time
@@ -290,6 +406,32 @@ input
   text-align: left;
 }
 
+#delete_task
+{
+  width: 350px;
+  height: 150px;
+  padding: 20px;
+  background-color: #F2E3E3;
+  position: absolute;
+  top: 10%;
+  left: 10%;
+}
+
+#delete_task span
+{
+  font-weight: bold;
+}
+
+
+.delete_task_button
+{
+  width: 150px;
+  border: none;
+  background-color: red;
+  color: #fff;
+  cursor: pointer;
+}
+
 .comments
 {
   padding-top: 50px;
@@ -300,4 +442,74 @@ input
   margin-top: 50px;
 }
 
+.comments form
+{
+  margin-top: 30px;
+}
+
+.comments textarea
+{
+  width: 350px;
+  height: 50px;
+}
+
+.comments input
+{
+  width: 100px;
+}
+
+#listupdates li
+{
+  border: 1px solid #F2E3E3;
+  border-radius: 20px;
+  height: 50px;
+  padding-top: 20px;
+  padding-left: 20px;
+  margin-bottom: 20px;
+  background-color: #F2E3E3;
+}
+
+/*-----------Admin user list --------------*/
+
+.user_table
+{
+  margin-top: 50px;
+  width: 90%;
+}
+
+.user_table td:first-child
+{
+  width: 80%;
+}
+
+.user_table th
+{
+  font-weight: bold;
+  text-align: left;
+  height: 50px;
+  background-color: #8FE862;
+  color: #fff;
+}
+
+.user_table tr
+{
+  background-color: #fff;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #8FE862;
+}
+
+
+
+
 /*------------FOOTER ---------------*/
+
+footer
+{
+  width: 100%;
+  height: 50px;
+  background-color: #F2E3E3;
+  position: relative;
+  margin-top: 50px;
+  bottom: 0;
+}

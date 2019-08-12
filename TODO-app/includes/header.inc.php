@@ -11,7 +11,8 @@
 <body>
     <header>
         <nav>
-            <a href="index.php">Home</a>
+            <a href="index.php"><img src="img/logo.png"alt="logo"></a>
+            <a class="logout" href="logout.php">Log out</a>
             </div>
         </nav>
 

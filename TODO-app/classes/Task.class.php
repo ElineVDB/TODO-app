@@ -7,7 +7,20 @@
     private $deadline_hour;
     private $time;
     private $id;
-    // private $list_id (bij welke lijst hoort de taak)
+    private $list_id;
+    private $comment;
+
+
+///////// id van de taak
+
+    public function getId(){
+        return $this->id;
+    }
+
+    public function setId($id){
+      $this->id = htmlspecialchars($id);
+      return $this;
+    }
 
 ///////////// title
     public function getTitle(){
@@ -59,21 +72,32 @@
       return $this;
     }
 
+    public function getListId(){
+      return $this->list_id;
+    }
+
+    public function setListId($list_id){
+      $this->list_id = htmlspecialchars($list_id);
+      return $this;
+    }
+
+
+
     //// save task
 
     public function saveTask(){
 
       try{
         $conn = Db::getInstance();
-        $statement = $conn->prepare("insert into task(title, about, deadline_date, deadline_hour, time) values(:title, :about, :deadline_date, :deadline_hour, :time)");
+        $statement = $conn->prepare("insert into task(title, about, deadline_date, deadline_hour, time, list_id) values(:title, :about, :deadline_date, :deadline_hour, :time, :list_id)");
 
         $statement->bindValue(':title', $this->getTitle());
         $statement->bindValue(':about', $this->getAbout());
         $statement->bindValue(':deadline_date', $this->getDeadlineDate());
         $statement->bindValue(':deadline_hour', $this->getDeadlineHour());
         $statement->bindValue(':time', $this->getTime());
+        $statement->bindValue(':list_id', $this->getListId());
         $statement->execute();
-        header("Location: list.php");
         return true;
       }
       catch(Throwable $t){
@@ -86,7 +110,8 @@
     public function showTasks(){
       try{
         $conn = Db::getInstance();
-        $statement = $conn->prepare("select * from task");
+        $statement = $conn->prepare("select * from task, list where task.list_id = id_list and list_id = :list_id order by deadline_date asc");
+        $statement->bindValue(':list_id', $this->getListId());
         $statement->execute();
         $result = $statement->fetchAll();
         return $result;
@@ -99,11 +124,12 @@
 
     ///// toon alle details van de taak
 
-    public function getTask($id){
+    public function getTask(){
       try{
         $conn = Db::getInstance();
-        $statement = $conn->prepare("select * from task where id='$id'");
-        $statement->execute(array($id));
+        $statement = $conn->prepare("select * from task where id_task = :id");
+        $statement->bindValue(':id', $this->getId());
+        $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result;
 
@@ -111,6 +137,42 @@
       catch(Throwable $t){
         echo "mislukt";
       }
+    }
+
+    ///// markeer een taak als "done"
+
+    public function saveTaskDone(){
+      $conn = Db::getInstance();
+      $statement = $conn->prepare("update task set done = 1 where id_task = :id");
+      $statement->bindValue(':id', $this->getId());
+      return $statement->execute();
+    }
+
+
+
+
+    //// edit task
+    public function editTask(){
+      $conn = Db::getInstance();
+      $statement = $conn->prepare("update task set title = :title, about = :about, deadline_date = :deadline_date, deadline_hour = :deadline_hour, time = :time where id_task = :id");
+      $statement->bindValue(':id', $this->getId());
+      $statement->bindValue(':title', $this->getTitle());
+      $statement->bindValue(':about', $this->getAbout());
+      $statement->bindValue(':deadline_date', $this->getDeadlineDate());
+      $statement->bindValue(':deadline_hour', $this->getDeadlineHour());
+      $statement->bindValue(':time', $this->getTime());
+      $statement->execute();
+      return true;
+    }
+
+    ///// delete task
+    public function deleteTask(){
+      $conn = Db::getInstance();
+      $statement = $conn->prepare("delete from task where id_task = :id");
+      $statement->bindValue(':id', $this->getId());
+      $statement->execute();
+      header("Location: index.php");
+      return true;
     }
 
 

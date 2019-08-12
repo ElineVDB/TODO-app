@@ -2,8 +2,7 @@
 
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
-require_once("classes/User.class.php");
-require_once("classes/Db.class.php");
+include_once("bootstrap.php");
 
 // checken of de velden niet leeg zijn
 if(!empty($_POST)){
@@ -36,12 +35,12 @@ if(!empty($_POST)){
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
-    <title>Log in | TODO app</title>
+    <title>Log in | DoobyDo</title>
 </head>
 
 <body>
 <div class="container">
-
+<img src="img/logo.png" alt="logo">
 <form id="sign_up_form" method="post" action="">
   <h1>Log in</h1>
 
@@ -62,7 +61,7 @@ if(!empty($_POST)){
 
 
 </div>
-
+<?php include_once("includes/footer.inc.php");?>
 </body>
 
 </html>
