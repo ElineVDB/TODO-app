@@ -6,6 +6,7 @@ class User {
   private $password;
   private $password_confirm;
   private $study;
+  private $id_user;
   //private $user_id; //is nodig om profiel aan te passen
 
 // toon alle studies in de dropdown van sign up
@@ -15,6 +16,15 @@ class User {
     $statement->execute();
     return $statement;
   }
+
+  public function getUserId(){
+    return $this->id_user;
+  }
+
+  public function setUserId($id_user){
+      $this->id_user = htmlspecialchars($id_user);
+      return $this;
+    }
 
 
   // krijg de waarde van firstname
@@ -30,8 +40,7 @@ class User {
       $this->firstname = htmlspecialchars($firstname);
       return $this;
     }
-    /*$this->firstname = $firstname;
-    return $this;*/
+
   }
 
   public function getLastname(){
@@ -46,8 +55,7 @@ class User {
       $this->lastname = htmlspecialchars($lastname);
       return $this;
     }
-    /*$this->lastname = $lastname;
-    return $this;*/
+
   }
 
 /// study
@@ -67,10 +75,9 @@ public function getEmail(){
 }
 
 public function setEmail($email){
-  $this->email = $email;
+  $this->email = htmlspecialchars($email);
   return $this;
 }
-
 
 // krijgt de waarde van password
 public function getPassword(){
@@ -78,7 +85,7 @@ public function getPassword(){
 }
 
 public function setPassword($password){
-  $this->password = $password;
+  $this->password = htmlspecialchars($password);
   return $this;
 }
 // voor register2
@@ -87,12 +94,12 @@ public function getPassword_confirm(){
 }
 
 public function setPassword_confirm($password_confirm){
-  $this->password_confirm = $password_confirm;
+  $this->password_confirm = htmlspecialchars($password_confirm);
   return $this;
 }
 
 
-
+///// registeren
 public function register(){
   // form validation
   if(!filter_var($this->email, FILTER_VALIDATE_EMAIL)){
@@ -122,9 +129,10 @@ public function register(){
     $statement->bindValue(':email', $this->getEmail());
     $statement->bindValue(':password', $password);
     $result = $statement->execute();
-    //return $result;
-    $_SESSION['first_name'] = $firstname;
-    header("Location: index.php");
+    return $result;
+    //$_SESSION['first_name'] = $firstname;
+    //header("Location: index.php");
+
   }
   catch( Throwable $t){
     echo "mislukt";
@@ -135,65 +143,106 @@ public function register(){
 
 }
 
-public function login(){
+public function login($password){
 
   // form validation
   if(!filter_var($this->email, FILTER_VALIDATE_EMAIL)){
     throw new Exception("Invalid Email");
-
   }
   if(strlen($this->password) < 8){
-    throw new Exception("Your password needs at leats 8 characters");
-
+    throw new Exception("Your password needs at least 8 characters");
   }
 
-  // eerst wordt het password gehasht
   else{
 
-  $options = [
-    "cost" => 12 // 2^12
-    ];
-  $password = password_hash($this->password,PASSWORD_DEFAULT,$options);
+  try
+     {
+       $conn = Db::getInstance();
+       $statement = $conn->prepare("select * from users where email = :email");
+       $statement->bindValue(':email', $this->getEmail());
+       //$statement->bindValue(':password', $password);
+
+        $statement->execute(array(':email'=>$this->getEmail()));
+        $userRow = $statement->fetch(PDO::FETCH_ASSOC);
 
 
+        if($statement->rowCount() > 0)
+        {
+           if(password_verify($password, $userRow['password']))
+           {
+              $_SESSION['user'] = $userRow['id_user'];
+              header("Location: home.php");
+              return true;
+           }
+           else
+           {
+              throw new Exception("Wrong password or email");
+              return false;
+           }
+        }
+     }
+     catch(PDOException $t)
+     {
+         echo $t->getMessage();
+     }
+ }
 
+
+  }
+
+
+//// ingelogd?
+  public function is_loggedin()
+     {
+        if(isset($_SESSION['user']))
+        {
+           return true;
+        }
+
+     }
+
+  public function redirect($url)
+   {
+       header("Location: $url");
+   }
+
+  ///// is de gebruiker een admin?
+
+  public function isAdmin($user_id){
 
     $conn = Db::getInstance();
-    $statement = $conn->prepare("select * from users where email like :email and password like :password");
+    $statement = $conn->prepare("select * from users where id_user = :id");
+    $statement->bindValue(':id', $user_id);
+    $statement->execute();
+    $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-    $statement->bindValue(':email', $this->getEmail());
-    $statement->bindValue(':password', $password);
-
-    $result = $statement->execute();
-
-    // we controleren of het opgegeven e-mail in de tabel User bestaat
-    if($this->getEmail() == 0){
-      throw new Exception("e-mail does not excist");
+    if($result['admin'] == 1){
+      return true;
     }
-    // we controleren of het password van het e-mail klopt
-    if($password != $result['password']){
-      throw new Exception("password doesn't match on this e-mail");
+    else{
+      return false;
     }
+  }
 
+//// toon de gegevens van de gebruiker
+  public function showUserData(){
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("select * from users where id_user = :id");
+    $statement->bindValue(':id', $this->getUserId());
+    $statement->execute();
+    $result = $statement->fetch(PDO::FETCH_ASSOC);
+    return $result;
+  }
 
-
-    // als het klopt, dan word de gebruiker opgeslagen in de server
-    $_SESSION['first_name'] = $firstname;
-
-    // ga naar de index pagina
-    header("Location: index.php");
+/// uitloggen
+  public function logout(){
+      session_destroy();
+      unset($_SESSION['user']);
+      return true;
   }
 
 
 }
-
-
-
-
-
-}
-
-
 
 
 ?>

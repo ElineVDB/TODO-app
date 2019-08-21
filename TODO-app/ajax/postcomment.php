@@ -5,22 +5,32 @@
   if(!empty($_POST)){
     // comment text uitlezen
     $text = $_POST['text'];
+    $taskId = $_POST['taskId'];
 
     // comment opslaan in db
     try{
-      $c = new Comment();
+      $c = new Task();
       $c->setText($text);
-      $c->save();
+      $c->setId($taskId);
 
-      $result = [
-        "status" => "succes",
-        "message" => "Comment was saved."
-      ];
+      if($c->saveComment()){
+        $result = [
+          "status" => "succes",
+          "message" => "Comment was saved."
+        ];
+      } else {
+        $result = [
+          "status" => "error",
+          "message" => "Something went wrong while saving."
+        ];
+
+      }
     }
     catch(Throwable $t){
       $result = [
         "status" => "error",
-        "message" => "Something went wrong."
+        "message" => "Something went wrong." . $t->getMessage()
+
       ];
     }
 
@@ -29,11 +39,6 @@
     // query (insert)
     // antwoord geven aan uw JS frontend (json)
   }
-
-
- ?>
-
-
 
 
  ?>

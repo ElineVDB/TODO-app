@@ -4,28 +4,27 @@ error_reporting(E_ALL);
 ini_set('display_errors', '1');
 include_once("bootstrap.php");
 
+// checken of de velden niet leeg zijn
+if(!empty($_POST)){
 
-$get_lists = new Lists();
-$show_lists = $get_lists->getLists();
+  session_start();
 
-// controleren of het veld is ingevuld
+  $email = $_POST['email'];
+  $password = $_POST['password'];
 
-if(!empty($_POST['save'])){
-
-  $name = $_POST['name_list'];
-  // user_id?
-
-  $list = new Lists();
-
-  $list->setName($name);
-  $list->saveList(); // de lijst wordt opgeslagen in de database
+  $user = new User();
+  $user->setEmail($email);
+  $user->getEmail();
+  $user->setPassword($password);
+  $user->getPassword();
+  try{
+      $user->login($password);
+  }
+  catch(Exception $t){
+    $error =  $t->getMessage();
+  }
 
 }
-else{
-  // foutboodschap tonen
-  $empty_field_error = "Please, fill in all the fields";
-}
-
 
 ?>
 <!DOCTYPE html>
@@ -36,43 +35,40 @@ else{
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
-    <title> Home | DoobyDo</title>
+    <title>Log in | DoobyDo</title>
 </head>
 
 <body>
-<?php include_once("includes/header.inc.php"); ?>
+<div class="container">
+<img src="img/logo.png" alt="logo">
+<form id="sign_up_form" method="post" action="">
+  <h1>Log in</h1>
 
-<div id="create_new_list">
-  <h1>Create a new list</h1>
-  <form id="create_list_form" method="post" action="">
-    <input type="text" name="name_list" class="input_list_title" placeholder="Enter a title">
-    <input type="submit" name="cancel" value="cancel" class="cancel_button" id="cancel_button">
-    <input type="submit" name="save" value="save" class="save_list_button">
+  <?php if(isset($error)): ?>
+  <div class="error"><?php echo $error; ?></div>
+  <?php endif; ?>
 
-  </form>
-</div>
-
-<!-- create a new list -->
-<div class="list_items">
-
-<h1>YOUR TO DO LISTS</h1>
-<br>
-<br>
-<!-- all your  todo lists -->
-<div class="create_list" id="create_list_button"> + Create a new list</div>
-<?php foreach($show_lists as $list): ?>
-<a href="list.php?id=<?php echo $list['id_list']; ?>">
-<div class="list" data-id="<?php echo $list['id_list']?>">
-  <?php echo $list['name']; ?>
+  <div class="sign_up_fields">
+  <input type="email" name="email" class="input_account" placeholder="E-mail" value="<?php if(isset($error)){echo $email;} ?>">
   </div>
-  </a>
 
-<?php endforeach; ?>
+  <!-- password -->
+  <div class="sign_up_fields">
+  <input type="password" name="password" class="input_account" placeholder="Password">
+  <br>
+  <p>Your password needs at least 8 characters</p>
+  </div>
+
+
+  <div class="sign_up_fields">
+  <input type="submit" name="submit" class="submit_button" value="Log in">
+  </div>
+<p>Not an account yet?</p> <a href="signup.php">Sign up</a>
+
+</form>
+
+
 </div>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="js/script.js"></script>
-
 <?php include_once("includes/footer.inc.php");?>
 </body>
 

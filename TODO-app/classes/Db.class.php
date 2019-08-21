@@ -4,7 +4,11 @@
    private static $conn;
 
    public static function getInstance(){
-     $config = parse_ini_file("config/config.ini");
+     $config = parse_ini_file( __DIR__ . "/../config/config.ini");
+     if(!$config){
+       throw new Exception("config file not found");
+     }
+
      if(self::$conn != null){
        return self::$conn;
      }
@@ -15,4 +19,8 @@
 
    }
  }
+
+
+
+
 ?>

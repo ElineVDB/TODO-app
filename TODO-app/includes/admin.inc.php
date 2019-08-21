@@ -6,13 +6,24 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
-    <title>Nav</title>
+    <title>Admin</title>
 </head>
+
+<style>
+
+.admin_header
+{
+  width: 100%;
+  height: 50px;
+  background-color: #F2E3E3;
+}
+
+</style>
+
 <body>
-    <header>
+    <header class="admin_header">
         <nav>
-            <a href="home.php"><img src="img/logo.png"alt="logo"></a>
-            <a class="logout" href="logout.php">Log out</a>
+            <a class="admin" href="admin.php">Go to administration </a>
             </div>
         </nav>
 

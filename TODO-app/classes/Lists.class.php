@@ -11,9 +11,20 @@ class Lists {
       }
 
     public function setId($id){
-        $this->id = $id;
+        $this->id = htmlspecialchars($id);
         return $this;
       }
+
+//// id van de gebruiker
+    public function getUserId(){
+        return $this->user_id;
+      }
+
+    public function setUserId($user_id){
+        $this->user_id = htmlspecialchars($user_id);
+        return $this;
+      }
+
 
 ///// name
     public function getName(){
@@ -21,7 +32,10 @@ class Lists {
     }
 
     public function setName($name){
-      $this->name = $name;
+      if(empty($name)){
+        throw new Exception("A list needs a name. ALWAYS");
+      }
+      $this->name = htmlspecialchars($name);
       return $this;
     }
 
@@ -30,11 +44,11 @@ class Lists {
 
       try{
           $conn = Db::getInstance();
-          $statement = $conn->prepare("insert into list(name) values(:name)");
+          $statement = $conn->prepare("insert into list(name, user_id) values(:name, :id)");
 
           $statement->bindValue(':name', $this->getName());
+          $statement->bindValue(':id', $this->getUserId());
           $statement->execute();
-          header("Location: list.php");
       }
       catch(Throwable $t){
         echo "mislukt";
@@ -48,7 +62,8 @@ class Lists {
       try{
         $conn = Db::getInstance();
         // toon de lijsten van de ingelogde gebruiker
-        $statement = $conn->prepare("select * from list");
+        $statement = $conn->prepare("select * from list where user_id = :id order by name asc");
+        $statement->bindValue(':id', $this->getUserId());
         $statement->execute();
         $result = $statement->fetchAll();
         return $result;
@@ -80,7 +95,7 @@ class Lists {
       $statement = $conn->prepare("delete from list where id_list = :id");
       $statement->bindValue(':id', $this->getId());
       $statement->execute();
-      header("Location: index.php");
+      header("Location: home.php");
       return true;
     }
 
